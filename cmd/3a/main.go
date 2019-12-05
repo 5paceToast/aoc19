@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
 	"toast.cafe/x/aoc19/lib"
 )
 

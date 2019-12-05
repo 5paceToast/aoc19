@@ -6,6 +6,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+
 	"toast.cafe/x/aoc19/lib"
 )
 

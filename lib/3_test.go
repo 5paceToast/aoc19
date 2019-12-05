@@ -1,8 +1,9 @@
 package lib
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestPathPartToInstructions(t *testing.T) {
