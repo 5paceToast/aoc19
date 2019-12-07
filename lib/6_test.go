@@ -100,3 +100,33 @@ func TestOrbitData(t *testing.T) {
 	}
 	assert.Equal(42, sum)
 }
+
+func TestDistanceData(t *testing.T) {
+	var set []*OrbitNode
+
+	set = ConnectMagic("COM", "B", set)
+	set = ConnectMagic("B", "C", set)
+	set = ConnectMagic("C", "D", set)
+	set = ConnectMagic("D", "E", set)
+	set = ConnectMagic("E", "F", set)
+	set = ConnectMagic("B", "G", set)
+	set = ConnectMagic("G", "H", set)
+	set = ConnectMagic("D", "I", set)
+	set = ConnectMagic("E", "J", set)
+	set = ConnectMagic("J", "K", set)
+	set = ConnectMagic("K", "L", set)
+
+	com := set[0].Root()
+	k := com.Filter(func(n *OrbitNode) bool { return n.Tag == "K" })[0]
+	i := com.Filter(func(n *OrbitNode) bool { return n.Tag == "I" })[0]
+
+	assert.Equal(t, 4, OrbitDistance(k, i))
+}
+
+func TestAncestorFailure(t *testing.T) {
+	var (
+		a = NewOrbitNode("a", nil)
+		b = NewOrbitNode("b", nil)
+	)
+	assert.Nil(t, OrbitCommonAncestor(a, b))
+}

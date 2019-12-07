@@ -105,3 +105,70 @@ func ConnectMagic(parent, child string, set []*OrbitNode) []*OrbitNode {
 	p.AddChild(c)
 	return set
 }
+
+// OrbitCommonAncestor calculates the common ancestor of two nodes
+func OrbitCommonAncestor(a, b *OrbitNode) *OrbitNode {
+	var (
+		aset, bset []*OrbitNode
+		p          = a
+		root       = a.Root()
+	)
+	if root != b.Root() {
+		return nil
+	}
+
+	for p != root {
+		aset = append(aset, p)
+		p = p.Parent
+	}
+	aset = append(aset, root)
+
+	p = b
+	for p != root {
+		bset = append(bset, p)
+		p = p.Parent
+	}
+	bset = append(bset, root)
+
+	var common []*OrbitNode
+	for _, aa := range aset {
+		for _, bb := range bset {
+			if aa == bb {
+				common = append(common, aa)
+			}
+		}
+	}
+
+	res := common[0] // guaranteed to exist because they have a common root
+	resv := res.Orbits()
+	for _, v := range common {
+		o := v.Orbits()
+		if o > resv {
+			res = v
+			resv = o
+		}
+	}
+
+	return res
+}
+
+// OrbitDistance calculates the distance between two nodes
+func OrbitDistance(a, b *OrbitNode) int {
+	var (
+		ancestor = OrbitCommonAncestor(a, b)
+		ap       = a
+		bp       = b
+		sum      int
+	)
+
+	for ap != ancestor {
+		sum++
+		ap = ap.Parent
+	}
+	for bp != ancestor {
+		sum++
+		bp = bp.Parent
+	}
+
+	return sum
+}
