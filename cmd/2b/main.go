@@ -10,20 +10,6 @@ import (
 	"toast.cafe/x/aoc19/lib"
 )
 
-func checkIteration(noun, verb, res int, prog []int) bool {
-	b := make([]int, len(prog))
-	copy(b, prog)
-	b[1] = noun
-	b[2] = verb
-
-	lib.RunIntcode(b)
-
-	if b[0] == res {
-		return true
-	}
-	return false
-}
-
 func main() {
 	reader := bufio.NewScanner(os.Stdin)
 	reader.Scan()
@@ -44,8 +30,14 @@ func main() {
 
 	for i := 0; i <= 99; i++ {
 		for j := 0; j <= 99; j++ {
-			if checkIteration(i, j, 19690720, prog) {
-				fmt.Printf("%d", 100*i+j)
+			prog[1] = i
+			prog[2] = j
+			cpu := lib.NewIOIntCode(prog)
+			cpu.Run()
+			s := cpu.State()
+			//fmt.Println(s[0])
+			if s[0] == 19690720 {
+				fmt.Printf("%d\n", 100*i+j)
 				os.Exit(0)
 			}
 		}

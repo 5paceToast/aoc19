@@ -28,6 +28,8 @@ func main() {
 		prog = append(prog, v)
 	}
 
-	res := lib.RunIntcode(prog)
-	fmt.Printf("%v\n", res)
+	cpu := lib.NewIOIntCode(prog)
+	cpu.Run()
+
+	fmt.Printf("%v\n", cpu.State())
 }

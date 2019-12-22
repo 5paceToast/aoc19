@@ -10,11 +10,15 @@ import (
 // but let's at least test immediate mode
 
 func TestImmediate(t *testing.T) {
-	assert := assert.New(t)
 	var (
-		a, _ = RunOpcode(0, []int{1002, 4, 3, 4, 33})
-		b, _ = RunOpcode(0, []int{1101, 100, -1, 4, 0})
+		assert = assert.New(t)
+
+		a = NewStubIntCode([]int{1002, 4, 3, 4, 33})
+		b = NewStubIntCode([]int{1101, 100, -1, 4, 0})
 	)
-	assert.Equal([]int{1002, 4, 3, 4, 99}, a)
-	assert.Equal([]int{1101, 100, -1, 4, 99}, b)
+	a.Run()
+	b.Run()
+
+	assert.Equal([]int{1002, 4, 3, 4, 99}, a.State())
+	assert.Equal([]int{1101, 100, -1, 4, 99}, b.State())
 }
